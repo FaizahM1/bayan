@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⏾ bayan</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <h1>⏾ bayan</h1>
+    <p class="tagline">spin a topic, research it, present it</p>
+  </header>
+
+  <section class="mode-select" id="modeSelect">
+    <button class="mode-btn active" data-mode="cuff">off the cuff</button>
+    <button class="mode-btn" data-mode="research">deep research</button>
+  </section>
+
+  <section class="card" id="topicCard">
+    <p class="label">your topic</p>
+    <h2 id="topicText">spin to get a topic</h2>
+    <button id="spinBtn" class="primary-btn">spin</button>
+    <button id="startBtn" class="primary-btn hidden">start</button>
+  </section>
+
+  <section class="timer-section hidden" id="timerSection">
+    <p class="phase-label" id="phaseLabel">research</p>
+    <div class="timer-ring">
+      <svg viewBox="0 0 200 200">
+        <circle class="ring-bg" cx="100" cy="100" r="90"></circle>
+        <circle class="ring-progress" id="ringProgress" cx="100" cy="100" r="90"></circle>
+      </svg>
+      <span class="timer-text" id="timerText">05:00</span>
+    </div>
+    <div class="timer-controls">
+      <button id="pauseBtn" class="ghost-btn">pause</button>
+      <button id="skipBtn" class="ghost-btn">skip</button>
+    </div>
+  </section>
+
+  <section class="done hidden" id="doneSection">
+    <h2>time's up</h2>
+    <p id="doneMessage">nicely done</p>
+    <button id="againBtn" class="primary-btn">go again</button>
+  </section>
+
+  <footer id="durationSettings">
+    <label class="hidden">
+      research time
+      <select id="researchDuration">
+        <option value="180">3 min</option>
+        <option value="300" selected>5 min</option>
+        <option value="600">10 min</option>
+      </select>
+    </label>
+    <label>
+      speaking time
+      <select id="speakDuration">
+        <option value="60">1 min</option>
+        <option value="120" selected>2 min</option>
+        <option value="180">3 min</option>
+      </select>
+    </label>
+  </footer>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>
