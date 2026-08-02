@@ -129,7 +129,7 @@ const researchDuration = document.getElementById("researchDuration");
 const speakDuration = document.getElementById("speakDuration");
 
 const circumference = 565.48;
-let mode = "cuff";
+let mode = "research";
 let currentTopic = "";
 let timerId = null;
 let timeLeft = 0;
@@ -146,13 +146,30 @@ modeSelect.addEventListener("click", (e) => {
   researchDuration.parentElement.classList.toggle("hidden", mode === "cuff");
 });
 
-spinBtn.addEventListener("click", () => {
-  const pick = topics[Math.floor(Math.random() * topics.length)];
-  currentTopic = pick;
-  topicText.textContent = pick;
-  spinBtn.classList.add("hidden");
-  startBtn.classList.remove("hidden");
-});
+function spin() {
+  spinBtn.disabled = true;
+  topicCard.classList.add("spinning");
+  let tick = 0;
+  const totalTicks = 22;
+  function nextTick(delay) {
+    const random = topics[Math.floor(Math.random() * topics.length)];
+    topicText.textContent = random;
+    tick++;
+    if (tick < totalTicks) {
+      const nextDelay = delay + tick * 5;
+      setTimeout(() => nextTick(nextDelay), nextDelay);
+    } else {
+      currentTopic = random;
+      topicCard.classList.remove("spinning");
+      spinBtn.disabled = false;
+      spinBtn.classList.add("hidden");
+      startBtn.classList.remove("hidden");
+    }
+  }
+  nextTick(45);
+}
+
+spinBtn.addEventListener("click", spin);
 
 startBtn.addEventListener("click", () => {
   topicCard.classList.add("hidden");
@@ -205,10 +222,29 @@ function tick() {
   }
 }
 
+function playChime() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const now = ctx.currentTime;
+  [523.25, 659.25, 783.99].forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0, now + i * 0.14);
+    gain.gain.linearRampToValueAtTime(0.2, now + i * 0.14 + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.14 + 0.6);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now + i * 0.14);
+    osc.stop(now + i * 0.14 + 0.6);
+  });
+}
+
 function endPhase() {
   if (currentPhase === "research") {
     startPhase("speak", parseInt(speakDuration.value, 10));
   } else {
+    playChime();
     timerSection.classList.add("hidden");
     doneSection.classList.remove("hidden");
     doneMessage.textContent = currentTopic;
