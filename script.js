@@ -304,6 +304,7 @@ const skipBtn = document.getElementById("skipBtn");
 const doneSection = document.getElementById("doneSection");
 const doneMessage = document.getElementById("doneMessage");
 const againBtn = document.getElementById("againBtn");
+const researchDurationWrapper = document.getElementById("researchDurationWrapper");
 const durationSettings = document.getElementById("durationSettings");
 const researchDuration = document.getElementById("researchDuration");
 const speakDuration = document.getElementById("speakDuration");
@@ -339,7 +340,7 @@ modeSelect.addEventListener("click", (e) => {
   mode = btn.dataset.mode;
   document.querySelectorAll(".mode-btn").forEach((b) => b.classList.remove("active"));
   btn.classList.add("active");
-  researchDuration.parentElement.classList.toggle("hidden", mode === "cuff");
+  researchDurationWrapper.classList.toggle("hidden", mode === "cuff");
   categorySelect.classList.toggle("hidden", mode === "cuff");
   resetTopicDisplay();
 });
@@ -414,6 +415,7 @@ againBtn.addEventListener("click", () => {
   durationSettings.classList.remove("hidden");
   modeSelect.classList.remove("hidden");
   categorySelect.classList.toggle("hidden", mode === "cuff");
+  researchDurationWrapper.classList.toggle("hidden", mode === "cuff");
   resetTopicDisplay();
 });
 
