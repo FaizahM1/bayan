@@ -341,20 +341,32 @@ modeSelect.addEventListener("click", (e) => {
   btn.classList.add("active");
   researchDuration.parentElement.classList.toggle("hidden", mode === "cuff");
   categorySelect.classList.toggle("hidden", mode === "cuff");
+  resetTopicDisplay();
 });
+
+categoryPicker.addEventListener("change", () => {
+  resetTopicDisplay();
+});
+
+function resetTopicDisplay() {
+  topicText.textContent = "spin to get a topic";
+  categoryLabel.textContent = "";
+  spinBtn.classList.remove("hidden");
+  startBtn.classList.add("hidden");
+}
 
 function spin() {
   spinBtn.disabled = true;
   topicCard.classList.add("spinning");
   categoryLabel.textContent = "";
   let tick = 0;
-  const totalTicks = 14;
+  const totalTicks = 12;
   function nextTick(delay) {
     const { topic } = randomPick();
     topicText.textContent = topic;
     tick++;
     if (tick < totalTicks) {
-      const nextDelay = delay + tick * 8;
+      const nextDelay = delay + tick * 7;
       setTimeout(() => nextTick(nextDelay), nextDelay);
     } else {
       const final = randomPick();
@@ -368,7 +380,7 @@ function spin() {
       startBtn.classList.remove("hidden");
     }
   }
-  nextTick(40);
+  nextTick(32);
 }
 
 spinBtn.addEventListener("click", spin);
@@ -377,6 +389,7 @@ startBtn.addEventListener("click", () => {
   topicCard.classList.add("hidden");
   durationSettings.classList.add("hidden");
   categorySelect.classList.add("hidden");
+  modeSelect.classList.add("hidden");
   timerSection.classList.remove("hidden");
   if (mode === "research") {
     startPhase("research", parseInt(researchDuration.value, 10));
@@ -399,11 +412,9 @@ againBtn.addEventListener("click", () => {
   doneSection.classList.add("hidden");
   topicCard.classList.remove("hidden");
   durationSettings.classList.remove("hidden");
+  modeSelect.classList.remove("hidden");
   categorySelect.classList.toggle("hidden", mode === "cuff");
-  topicText.textContent = "spin to get a topic";
-  categoryLabel.textContent = "";
-  spinBtn.classList.remove("hidden");
-  startBtn.classList.add("hidden");
+  resetTopicDisplay();
 });
 
 function startPhase(name, seconds) {
