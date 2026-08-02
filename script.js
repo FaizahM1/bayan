@@ -61,7 +61,15 @@ const topicCategories = {
     "Sumayyah bint Khayyat, the first martyr in Islam",
     "Nusaybah bint Ka'b's role defending the Prophet ﷺ at Uhud",
     "Umm Salamah's role as an advisor to the Prophet ﷺ",
-    "Rabia al-Basri and the concept of divine love"
+    "Rabia al-Basri and the concept of divine love",
+    "Hafsa bint Umar's role preserving the Qur'an manuscript",
+    "Asma bint Abi Bakr's role during the Hijrah",
+    "Umm Sulaym bint Milhan's wisdom and generosity",
+    "Zaynab bint Jahsh's charity and devotion",
+    "Safiyyah bint Huyayy's story",
+    "Al-Shifa bint Abdullah, an early teacher of literacy",
+    "Zubaidah bint Ja'far and the water route she built for pilgrims",
+    "Umm Waraqah, who led her household in prayer"
   ],
 
   namesOfAllah: [
@@ -181,13 +189,30 @@ const topicCategories = {
   ],
 
   events: [
-    "Battle of Badr",
+    "the first revelation in the Cave of Hira",
+    "the Isra and Mi'raj, the night journey and ascension",
+    "the migration to Abyssinia",
+    "Aam al-Huzn, the year of sorrow",
     "Hijrah to Medina",
-    "farewell sermon of the Prophet ﷺ",
-    "Laylat al-Qadr, the night of decree",
+    "the Constitution of Medina",
+    "Battle of Badr",
+    "Battle of Uhud",
+    "Battle of the Trench, al-Khandaq",
     "the Treaty of Hudaybiyyah and its long-term significance",
     "the Covenant of Najran and early Muslim treatment of religious minorities",
-    "the Pact of Umar and early Muslim governance of Jerusalem"
+    "Battle of Khaybar",
+    "Conquest of Mecca",
+    "Battle of Tabuk",
+    "farewell sermon of the Prophet ﷺ",
+    "the Pact of Umar and early Muslim governance of Jerusalem",
+    "the compilation of the Qur'an under Caliph Uthman",
+    "Battle of Yarmouk",
+    "Battle of Qadisiyyah",
+    "the founding of Baghdad",
+    "the conquest of Constantinople",
+    "Battle of Ain Jalut",
+    "the fall of Baghdad to the Mongols",
+    "the fall of Granada and the end of Muslim Spain"
   ],
 
   concepts: [
@@ -210,7 +235,8 @@ const topicCategories = {
     "ikhlas, sincerity in intention",
     "qadar, divine decree and free will",
     "ummah, the global Muslim community",
-    "jihad al-nafs, struggle against the self"
+    "jihad al-nafs, struggle against the self",
+    "Laylat al-Qadr, the night of decree"
   ],
 
   history: [
@@ -249,13 +275,24 @@ const topicCategories = {
   ]
 };
 
-const allResearchTopics = Object.values(topicCategories).flat();
+const categoryLabels = {
+  cuff: "off the cuff",
+  prophets: "prophets",
+  women: "women in Islam",
+  namesOfAllah: "99 names of Allah",
+  places: "places",
+  events: "battles and events",
+  concepts: "concepts",
+  history: "history and scholars"
+};
 
 const modeSelect = document.getElementById("modeSelect");
 const categorySelect = document.getElementById("categorySelect");
 const categoryPicker = document.getElementById("categoryPicker");
 const topicCard = document.getElementById("topicCard");
 const topicText = document.getElementById("topicText");
+const categoryLabel = document.getElementById("categoryLabel");
+const timerCategoryLabel = document.getElementById("timerCategoryLabel");
 const spinBtn = document.getElementById("spinBtn");
 const startBtn = document.getElementById("startBtn");
 const timerSection = document.getElementById("timerSection");
@@ -271,19 +308,29 @@ const durationSettings = document.getElementById("durationSettings");
 const researchDuration = document.getElementById("researchDuration");
 const speakDuration = document.getElementById("speakDuration");
 
-const circumference = 565.48;
+const circumference = 534.07;
 let mode = "research";
 let currentTopic = "";
+let currentCategory = "";
 let timerId = null;
 let timeLeft = 0;
 let totalTime = 0;
 let paused = false;
 let currentPhase = "";
 
-function currentPool() {
-  if (mode === "cuff") return easyTopics;
-  const picked = categoryPicker.value;
-  return picked === "random" ? allResearchTopics : topicCategories[picked];
+function randomPick() {
+  if (mode === "cuff") {
+    const topic = easyTopics[Math.floor(Math.random() * easyTopics.length)];
+    return { topic, category: "cuff" };
+  }
+  let categoryKey = categoryPicker.value;
+  if (categoryKey === "random") {
+    const keys = Object.keys(topicCategories);
+    categoryKey = keys[Math.floor(Math.random() * keys.length)];
+  }
+  const pool = topicCategories[categoryKey];
+  const topic = pool[Math.floor(Math.random() * pool.length)];
+  return { topic, category: categoryKey };
 }
 
 modeSelect.addEventListener("click", (e) => {
@@ -299,25 +346,29 @@ modeSelect.addEventListener("click", (e) => {
 function spin() {
   spinBtn.disabled = true;
   topicCard.classList.add("spinning");
-  const pool = currentPool();
+  categoryLabel.textContent = "";
   let tick = 0;
-  const totalTicks = 10;
+  const totalTicks = 14;
   function nextTick(delay) {
-    const random = pool[Math.floor(Math.random() * pool.length)];
-    topicText.textContent = random;
+    const { topic } = randomPick();
+    topicText.textContent = topic;
     tick++;
     if (tick < totalTicks) {
-      const nextDelay = delay + tick * 3;
+      const nextDelay = delay + tick * 8;
       setTimeout(() => nextTick(nextDelay), nextDelay);
     } else {
-      currentTopic = random;
+      const final = randomPick();
+      currentTopic = final.topic;
+      currentCategory = final.category;
+      topicText.textContent = currentTopic;
+      categoryLabel.textContent = categoryLabels[currentCategory];
       topicCard.classList.remove("spinning");
       spinBtn.disabled = false;
       spinBtn.classList.add("hidden");
       startBtn.classList.remove("hidden");
     }
   }
-  nextTick(35);
+  nextTick(40);
 }
 
 spinBtn.addEventListener("click", spin);
@@ -350,6 +401,7 @@ againBtn.addEventListener("click", () => {
   durationSettings.classList.remove("hidden");
   categorySelect.classList.toggle("hidden", mode === "cuff");
   topicText.textContent = "spin to get a topic";
+  categoryLabel.textContent = "";
   spinBtn.classList.remove("hidden");
   startBtn.classList.add("hidden");
 });
@@ -362,6 +414,7 @@ function startPhase(name, seconds) {
   timeLeft = seconds;
   phaseLabel.textContent = name === "research" ? "research" : "present";
   document.getElementById("topicReminder").textContent = currentTopic;
+  timerCategoryLabel.textContent = categoryLabels[currentCategory];
   updateDisplay();
   timerId = setInterval(tick, 1000);
 }
@@ -376,7 +429,20 @@ function tick() {
   }
 }
 
+let muted = localStorage.getItem("bayan-muted") === "true";
+const muteToggle = document.getElementById("muteToggle");
+muteToggle.textContent = muted ? "unmute" : "mute";
+muteToggle.classList.toggle("active", muted);
+
+muteToggle.addEventListener("click", () => {
+  muted = !muted;
+  localStorage.setItem("bayan-muted", muted);
+  muteToggle.textContent = muted ? "unmute" : "mute";
+  muteToggle.classList.toggle("active", muted);
+});
+
 function playResearchEndSound() {
+  if (muted) return;
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
   const now = ctx.currentTime;
   [392.0, 523.25].forEach((freq, i) => {
@@ -395,6 +461,7 @@ function playResearchEndSound() {
 }
 
 function playFinalChime() {
+  if (muted) return;
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
   const now = ctx.currentTime;
   [523.25, 659.25, 783.99].forEach((freq, i) => {
@@ -412,6 +479,18 @@ function playFinalChime() {
   });
 }
 
+function spawnConfetti() {
+  for (let i = 0; i < 36; i++) {
+    const piece = document.createElement("div");
+    piece.className = "confetti-piece";
+    piece.style.left = Math.random() * 100 + "vw";
+    piece.style.animationDelay = Math.random() * 0.3 + "s";
+    piece.style.background = i % 2 === 0 ? "var(--green)" : "var(--green-dark)";
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 2000);
+  }
+}
+
 function endPhase() {
   if (currentPhase === "research") {
     playResearchEndSound();
@@ -421,6 +500,7 @@ function endPhase() {
     timerSection.classList.add("hidden");
     doneSection.classList.remove("hidden");
     doneMessage.textContent = currentTopic;
+    setTimeout(spawnConfetti, 400);
   }
 }
 
@@ -428,18 +508,18 @@ const themeToggle = document.getElementById("themeToggle");
 const savedTheme = localStorage.getItem("bayan-theme");
 if (savedTheme === "dark") {
   document.body.dataset.theme = "dark";
-  themeToggle.textContent = "☀️ day mode";
+  themeToggle.textContent = "day mode";
 }
 
 themeToggle.addEventListener("click", () => {
   const isDark = document.body.dataset.theme === "dark";
   if (isDark) {
     delete document.body.dataset.theme;
-    themeToggle.textContent = "🌙 night mode";
+    themeToggle.textContent = "night mode";
     localStorage.setItem("bayan-theme", "light");
   } else {
     document.body.dataset.theme = "dark";
-    themeToggle.textContent = "☀️ day mode";
+    themeToggle.textContent = "day mode";
     localStorage.setItem("bayan-theme", "dark");
   }
 });
