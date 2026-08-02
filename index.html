@@ -3,14 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⏾ bayan</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'">
+<meta name="referrer" content="no-referrer">
+<title>bayan ⏾</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="app">
 
+  <button id="themeToggle" class="theme-toggle" aria-label="toggle night mode">☾</button>
+
   <header>
-    <h1>⏾ bayan</h1>
+    <h1>bayan ⏾</h1>
     <p class="tagline">spin a topic, research it, present it</p>
   </header>
 
@@ -28,6 +32,7 @@
 
   <section class="timer-section hidden" id="timerSection">
     <p class="phase-label" id="phaseLabel">research</p>
+    <p class="topic-reminder" id="topicReminder"></p>
     <div class="timer-ring">
       <svg viewBox="0 0 200 200">
         <circle class="ring-bg" cx="100" cy="100" r="90"></circle>
