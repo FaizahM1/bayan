@@ -33,19 +33,25 @@ body {
   transition: background 0.25s ease, color 0.25s ease;
 }
 
-.theme-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  border: 1px solid var(--ring-bg);
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px auto 0;
+  border: 2px solid var(--green-dark);
   background: var(--white);
   color: var(--green-dark);
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  font-size: 16px;
+  padding: 14px 30px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.25s ease, color 0.25s ease;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--green-soft);
 }
 
 .topic-reminder {
@@ -87,6 +93,7 @@ header h1 {
   background: var(--white);
   padding: 6px;
   border-radius: 14px;
+  border: 2px solid var(--green-dark);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
@@ -107,11 +114,35 @@ header h1 {
   color: var(--white);
 }
 
+.category-select {
+  display: flex;
+  justify-content: center;
+}
+
+.category-select label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+.category-select select {
+  background: var(--white);
+  border: 1px solid var(--ring-bg);
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: var(--text);
+  font-size: 13px;
+}
+
 .card {
   background: var(--white);
   border-radius: 20px;
   padding: 36px 28px;
   text-align: center;
+  border: 2px solid var(--green-dark);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -184,6 +215,7 @@ header h1 {
   border-radius: 20px;
   padding: 32px 28px;
   text-align: center;
+  border: 2px solid var(--green-dark);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -245,6 +277,7 @@ header h1 {
   border-radius: 20px;
   padding: 40px 28px;
   text-align: center;
+  border: 2px solid var(--green-dark);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
