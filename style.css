@@ -89,6 +89,20 @@ header h1 {
   color: var(--text-soft);
 }
 
+.card.spinning h2 {
+  animation: pulse 0.3s ease-in-out infinite;
+  color: var(--green-dark);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
 .card h2 {
   margin: 0 0 26px;
   font-size: 19px;
