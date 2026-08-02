@@ -11,8 +11,6 @@
 <body>
 <div class="app">
 
-  <button id="themeToggle" class="theme-toggle" aria-label="toggle night mode">☾</button>
-
   <header>
     <h1>bayan ⏾</h1>
     <p class="tagline">spin a topic, research it, present it</p>
@@ -22,6 +20,22 @@
     <button class="mode-btn active" data-mode="research">deep research</button>
     <button class="mode-btn" data-mode="cuff">off the cuff</button>
   </section>
+
+  <div class="category-select" id="categorySelect">
+    <label>
+      category
+      <select id="categoryPicker">
+        <option value="random" selected>random</option>
+        <option value="prophets">prophets</option>
+        <option value="women">women in Islam</option>
+        <option value="namesOfAllah">names of Allah</option>
+        <option value="places">places</option>
+        <option value="events">battles and events</option>
+        <option value="concepts">concepts</option>
+        <option value="history">history and scholars</option>
+      </select>
+    </label>
+  </div>
 
   <section class="card" id="topicCard">
     <p class="label">your topic</p>
@@ -70,6 +84,8 @@
       </select>
     </label>
   </footer>
+
+  <button id="themeToggle" class="theme-toggle-btn">🌙 night mode</button>
 
 </div>
 <script src="script.js"></script>
