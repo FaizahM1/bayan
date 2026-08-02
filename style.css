@@ -149,7 +149,6 @@ header h1 {
   margin: 0 0 18px;
   font-size: 11px;
   letter-spacing: 0.4px;
-  text-transform: uppercase;
   color: var(--text-soft);
   opacity: 0.75;
 }
