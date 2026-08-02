@@ -150,13 +150,13 @@ function spin() {
   spinBtn.disabled = true;
   topicCard.classList.add("spinning");
   let tick = 0;
-  const totalTicks = 22;
+  const totalTicks = 10;
   function nextTick(delay) {
     const random = topics[Math.floor(Math.random() * topics.length)];
     topicText.textContent = random;
     tick++;
     if (tick < totalTicks) {
-      const nextDelay = delay + tick * 5;
+      const nextDelay = delay + tick * 3;
       setTimeout(() => nextTick(nextDelay), nextDelay);
     } else {
       currentTopic = random;
@@ -166,7 +166,7 @@ function spin() {
       startBtn.classList.remove("hidden");
     }
   }
-  nextTick(45);
+  nextTick(35);
 }
 
 spinBtn.addEventListener("click", spin);
@@ -208,6 +208,7 @@ function startPhase(name, seconds) {
   totalTime = seconds;
   timeLeft = seconds;
   phaseLabel.textContent = name === "research" ? "research" : "present";
+  document.getElementById("topicReminder").textContent = currentTopic;
   updateDisplay();
   timerId = setInterval(tick, 1000);
 }
@@ -222,7 +223,25 @@ function tick() {
   }
 }
 
-function playChime() {
+function playResearchEndSound() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const now = ctx.currentTime;
+  [392.0, 523.25].forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0, now + i * 0.12);
+    gain.gain.linearRampToValueAtTime(0.14, now + i * 0.12 + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.4);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now + i * 0.12);
+    osc.stop(now + i * 0.12 + 0.4);
+  });
+}
+
+function playFinalChime() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
   const now = ctx.currentTime;
   [523.25, 659.25, 783.99].forEach((freq, i) => {
@@ -242,14 +261,35 @@ function playChime() {
 
 function endPhase() {
   if (currentPhase === "research") {
+    playResearchEndSound();
     startPhase("speak", parseInt(speakDuration.value, 10));
   } else {
-    playChime();
+    playFinalChime();
     timerSection.classList.add("hidden");
     doneSection.classList.remove("hidden");
     doneMessage.textContent = currentTopic;
   }
 }
+
+const themeToggle = document.getElementById("themeToggle");
+const savedTheme = localStorage.getItem("bayan-theme");
+if (savedTheme === "dark") {
+  document.body.dataset.theme = "dark";
+  themeToggle.textContent = "☀";
+}
+
+themeToggle.addEventListener("click", () => {
+  const isDark = document.body.dataset.theme === "dark";
+  if (isDark) {
+    delete document.body.dataset.theme;
+    themeToggle.textContent = "☾";
+    localStorage.setItem("bayan-theme", "light");
+  } else {
+    document.body.dataset.theme = "dark";
+    themeToggle.textContent = "☀";
+    localStorage.setItem("bayan-theme", "dark");
+  }
+});
 
 function updateDisplay() {
   const minutes = Math.floor(timeLeft / 60).toString().padStart(2, "0");
