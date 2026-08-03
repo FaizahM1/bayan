@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>bayan ⏾</title>
 <link rel="stylesheet" href="style.css">
@@ -39,7 +39,10 @@
     <h2 id="topicText">spin to get a topic</h2>
     <p class="category-tag" id="categoryLabel"></p>
     <button id="spinBtn" class="primary-btn">spin</button>
-    <button id="startBtn" class="primary-btn hidden">start</button>
+    <div class="topic-actions hidden" id="topicActions">
+      <button id="startBtn" class="primary-btn">start</button>
+      <button id="respinBtn" class="ghost-btn">respin</button>
+    </div>
   </section>
 
   <section class="timer-section hidden" id="timerSection">
