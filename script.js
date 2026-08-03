@@ -365,6 +365,7 @@ function spin() {
   function nextTick(delay) {
     const { topic } = randomPick();
     topicText.textContent = topic;
+    playSpinTick();
     tick++;
     if (tick < totalTicks) {
       const nextDelay = delay + tick * 7;
@@ -454,42 +455,66 @@ muteToggle.addEventListener("click", () => {
   muteToggle.classList.toggle("active", muted);
 });
 
-function playResearchEndSound() {
+const rulesToggle = document.getElementById("rulesToggle");
+const rulesOverlay = document.getElementById("rulesOverlay");
+const closeRules = document.getElementById("closeRules");
+
+rulesToggle.addEventListener("click", () => {
+  rulesOverlay.classList.remove("hidden");
+});
+
+closeRules.addEventListener("click", () => {
+  rulesOverlay.classList.add("hidden");
+});
+
+rulesOverlay.addEventListener("click", (e) => {
+  if (e.target === rulesOverlay) {
+    rulesOverlay.classList.add("hidden");
+  }
+});
+
+let audioCtx = null;
+
+function getAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === "suspended") {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+function playTone(freq, startOffset, duration, volume) {
   if (muted) return;
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const now = ctx.currentTime;
-  [392.0, 523.25].forEach((freq, i) => {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = "sine";
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0, now + i * 0.12);
-    gain.gain.linearRampToValueAtTime(0.14, now + i * 0.12 + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.4);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start(now + i * 0.12);
-    osc.stop(now + i * 0.12 + 0.4);
-  });
+  const ctx = getAudioCtx();
+  const now = ctx.currentTime + startOffset;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = "sine";
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(volume, now + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(now);
+  osc.stop(now + duration);
+}
+
+function playSpinTick() {
+  playTone(680 + Math.random() * 180, 0, 0.05, 0.06);
+}
+
+function playResearchEndSound() {
+  playTone(392.0, 0, 0.4, 0.14);
+  playTone(523.25, 0.12, 0.4, 0.14);
 }
 
 function playFinalChime() {
-  if (muted) return;
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const now = ctx.currentTime;
-  [523.25, 659.25, 783.99].forEach((freq, i) => {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = "sine";
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0, now + i * 0.14);
-    gain.gain.linearRampToValueAtTime(0.2, now + i * 0.14 + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.14 + 0.6);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start(now + i * 0.14);
-    osc.stop(now + i * 0.14 + 0.6);
-  });
+  playTone(523.25, 0, 0.6, 0.2);
+  playTone(659.25, 0.14, 0.6, 0.2);
+  playTone(783.99, 0.28, 0.6, 0.2);
 }
 
 function spawnConfetti() {
