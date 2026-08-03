@@ -17,10 +17,10 @@ const easyTopics = [
   "Mecca",
   "mosque",
   "adhan",
+  "Prophet Ibrahim",
   "insha'Allah",
-  "salam",
+  "salaam",
   "halal"
-  "haram"
 ];
 
 const topicCategories = {
@@ -295,6 +295,8 @@ const categoryLabel = document.getElementById("categoryLabel");
 const timerCategoryLabel = document.getElementById("timerCategoryLabel");
 const spinBtn = document.getElementById("spinBtn");
 const startBtn = document.getElementById("startBtn");
+const topicActions = document.getElementById("topicActions");
+const respinBtn = document.getElementById("respinBtn");
 const timerSection = document.getElementById("timerSection");
 const phaseLabel = document.getElementById("phaseLabel");
 const timerText = document.getElementById("timerText");
@@ -353,7 +355,7 @@ function resetTopicDisplay() {
   topicText.textContent = "spin to get a topic";
   categoryLabel.textContent = "";
   spinBtn.classList.remove("hidden");
-  startBtn.classList.add("hidden");
+  topicActions.classList.add("hidden");
 }
 
 function spin() {
@@ -379,13 +381,14 @@ function spin() {
       topicCard.classList.remove("spinning");
       spinBtn.disabled = false;
       spinBtn.classList.add("hidden");
-      startBtn.classList.remove("hidden");
+      topicActions.classList.remove("hidden");
     }
   }
   nextTick(32);
 }
 
 spinBtn.addEventListener("click", spin);
+respinBtn.addEventListener("click", spin);
 
 startBtn.addEventListener("click", () => {
   topicCard.classList.add("hidden");
