@@ -17,10 +17,10 @@ const easyTopics = [
   "Mecca",
   "mosque",
   "adhan",
-  "Prophet Ibrahim",
   "insha'Allah",
-  "salaam",
+  "salam",
   "halal"
+  "haram"
 ];
 
 const topicCategories = {
