@@ -26,7 +26,7 @@ body[data-theme="dark"] {
 
 body {
   margin: 0;
-  background: var(--cream);
+  background: linear-gradient(180deg, var(--cream), var(--cream) 60%, var(--green-soft) 400%);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   min-height: 100vh;
@@ -66,6 +66,7 @@ header h1 {
   padding: 5px;
   border-radius: 14px;
   border: 2px solid var(--green-dark);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .mode-btn {
@@ -81,8 +82,9 @@ header h1 {
 }
 
 .mode-btn.active {
-  background: var(--green);
+  background: linear-gradient(135deg, var(--green), var(--green-dark));
   color: var(--white);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .category-select {
@@ -99,6 +101,7 @@ header h1 {
   color: var(--text);
   font-size: 13px;
   text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .card {
@@ -107,6 +110,7 @@ header h1 {
   padding: 26px 22px;
   text-align: center;
   border: 2px solid var(--green-dark);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .label {
@@ -155,17 +159,19 @@ header h1 {
 
 .primary-btn {
   border: none;
-  background: var(--green);
+  background: linear-gradient(135deg, var(--green), var(--green-dark));
   color: var(--white);
   padding: 11px 30px;
   border-radius: 999px;
   font-size: 13px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .primary-btn:hover {
-  background: var(--green-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.16);
 }
 
 .ghost-btn {
@@ -189,6 +195,7 @@ header h1 {
   padding: 24px 22px;
   text-align: center;
   border: 2px solid var(--green-dark);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .phase-label {
@@ -261,6 +268,7 @@ header h1 {
   padding: 30px 22px;
   text-align: center;
   border: 2px solid var(--green-dark);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .done h2 {
@@ -320,15 +328,17 @@ header h1 {
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   transition: all 0.2s ease;
 }
 
 .pill-btn:hover {
   background: var(--green-soft);
+  transform: translateY(-1px);
 }
 
 .pill-btn.active {
-  background: var(--green-dark);
+  background: linear-gradient(135deg, var(--green), var(--green-dark));
   color: var(--white);
 }
 
@@ -353,6 +363,56 @@ header h1 {
     transform: translateY(70vh) rotate(360deg);
     opacity: 0;
   }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(20, 24, 20, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.modal-box {
+  background: var(--white);
+  border: 2px solid var(--green-dark);
+  border-radius: 18px;
+  padding: 28px 24px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
+
+.modal-box h3 {
+  margin: 0 0 14px;
+  color: var(--green-dark);
+  text-align: center;
+}
+
+.modal-box p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0 0 14px;
+}
+
+.modal-box .thank-you {
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 13px;
+  margin: 18px 0;
+}
+
+.modal-box .ghost-btn {
+  display: block;
+  margin: 0 auto;
 }
 
 .hidden {
